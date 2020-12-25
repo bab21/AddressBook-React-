@@ -165,13 +165,24 @@ select {
     cursor: pointer;
 }
 
-.submitButton {
+/* .submitButton {
     background-color: #f5f5f5;
     margin-left: 400px;
+} */
+
+.submitButton {
+    background-color: green;
+    margin-left: 400px;
+    color: white;
 }
 
+.submitButton[disabled]{
+  border: 1px solid #999999;
+  background-color: white;
+  color: black;
+}
 .resetButton {
-    background-color: #f5f5f5;
+    background-color: yellow;
     margin-left: 100px;
 }
 

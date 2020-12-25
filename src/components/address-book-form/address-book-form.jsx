@@ -5,6 +5,8 @@ import AddressBookService from '../../services/AddressBookService';
 import addressBookIcon from '../../assets/icons/address_book_icon.jpg';
 import cancelIcon from '../../assets/icons/cancel.jpg';
 import React, {Component} from 'react'
+import { checkName,checkAddress,checkPhoneNumber,checkZip } from "./utility.js";
+
 
 
 class AddressBookForm extends Component{
@@ -19,6 +21,10 @@ class AddressBookForm extends Component{
             state: '',
             phoneNumber: '',
             zip: '',
+            nameError: '',
+            addressError: '',
+            phoneError: '',
+            zipError: '',
             
         }
         this.changeNameHandler=this.changeNameHandler.bind(this);
@@ -56,9 +62,21 @@ class AddressBookForm extends Component{
     }
     changeNameHandler =(event)=>{
         this.setState({fullName:event.target.value});
+        try {
+            checkName(event.target.value);
+            this.setState({ nameError: "" });
+        } catch (error) {
+            this.setState({ nameError: error });
+        }
     }
     changeAddressHandler =(event)=>{
         this.setState({address:event.target.value});
+        try {
+            checkAddress(event.target.value);
+            this.setState({ addressError: "" });
+        } catch (error) {
+            this.setState({ addressError: error });
+        }
     }
     changeCityHandler =(event)=>{
         this.setState({city:event.target.value});
@@ -68,9 +86,47 @@ class AddressBookForm extends Component{
     }
     changePhoneNumberHandler =(event)=>{
         this.setState({phoneNumber: event.target.value});
+        try {
+            checkPhoneNumber(event.target.value);
+            this.setState({ phoneError: "" });
+        } catch (error) {
+            this.setState({ phoneError: error });
+        }
     }
     changeZipCodeHandler =(event)=>{
         this.setState({zip: event.target.value});
+        try {
+            checkZip(event.target.value);
+            this.setState({ zipError: "" });
+        } catch (error) {
+            this.setState({ zipError: error });
+        }
+    }
+    allFieldCorrect =()=>{
+        console.log(this.state);
+        if(this.state.nameError!="")
+        return false;
+        if(this.state.addressError!="")
+        return false;
+        if(this.state.phoneError!="")
+        return false;
+        if(this.state.zipError!="")
+        return false;
+        if(this.state.fullName=="")
+        return false;
+        if(this.state.address=="")
+        return false;
+        if(this.state.phoneNumber=="")
+        return false;
+        if(this.state.city=="")
+        return false;
+        if(this.state.state=="")
+        return false;
+        if(this.state.zip=="")
+        return false;
+
+
+        return true;
     }
     saveOrUpdateContact = async(event) => {
         console.log("called saved");
@@ -96,6 +152,20 @@ class AddressBookForm extends Component{
             }
 
     }
+    reset = (event) => {
+        this.setState({
+          fullName: "",
+          address: "",
+          city: "",
+          state: "",
+          phoneNumber:"",
+          zip: "",
+          nameError: "",
+          addressError: "",
+          phoneError: "",
+          zipError: "",
+        });
+    };
     
     
     render(){
@@ -120,12 +190,12 @@ class AddressBookForm extends Component{
                         <div class="row-content">
                             <label class="label text" for="fullName">Full Name</label>
                             <input class="input" type="text" id="fullName" value={this.state.fullName} onChange={this.changeNameHandler}  name="fullName" placeholder="Enter Your Full Name" required/>
-                            <error-output class="text-error" for="text"></error-output>
+                            <error-output class="text-error" for="text">{this.state.nameError}</error-output>
                         </div>
                         <div class="row-content">
                             <label class="label text" for="address">Address</label>
                             <input class="input address-input" value={this.state.address} type="text" onChange={this.changeAddressHandler} id="address" placeholder="Address" required/>
-                            <error-output class ="address-error" for="text"></error-output>
+                            <error-output class ="address-error" for="text">{this.state.addressError}</error-output>
                         </div>
                         <div class="select-input-fields">
                             <label class="label text" for="city" >City</label>
@@ -148,17 +218,17 @@ class AddressBookForm extends Component{
                             </select>
                             <label class="label-text-select" for="zip">Zip Code</label>
                             <input class="input" type="text" id="zipCode" name="zipCode" value={this.state.zip} onChange={this.changeZipCodeHandler} placeholder="Zip Code" required/>
-
+                            <error-output class ="zip-error" for="text">{this.state.zipError}</error-output>
                         </div>
                         <div class="row-content">
                             <label class="label text" for="phone">Phone Number</label>
                             <input class="input" type="text" id="tel" value={this.state.phoneNumber} name="tel" onChange={this.changePhoneNumberHandler}  placeholder="Phone Number" required/>
-                            <error-output class ="tel-error" for="text"></error-output>
+                            <error-output class ="tel-error" for="text">{this.state.phoneError}</error-output>
                         </div>
                         <div class="buttonParent">
                             <div class="submit-reset">
-                                <button type="submit" class="button submitButton" id="submitButton" onClick={this.saveOrUpdateContact}>Add</button>
-                                <button type="reset" class="button resetButton">Reset</button>
+                                <button type="submit" class="button submitButton" id="submitButton" disabled={!this.allFieldCorrect()} onClick={this.saveOrUpdateContact}>Add</button>
+                                <button type="reset" class="button resetButton" onClick={this.reset}>Reset</button>
                             </div>
                         </div>
 
