@@ -5,6 +5,7 @@ import './home.scss';
 
 import deleteIcon from '../../assets/icons/delete-black-18dp.svg';
 import updateIcon from '../../assets/icons/create-black-18dp.svg'
+import searchIcon from '../../assets/icons/search_icon_1.svg'
 import addressBookIcon from '../../assets/icons/address_book_icon.jpg';
 import {useParams,Link,withRouter} from 'react-router-dom';
 import AddressBookService from '../../services/AddressBookService'
@@ -34,6 +35,15 @@ class Home extends Component{
         .catch(err => console.log(err));
         console.log("all" +this.state.contacts);
     }
+    search = async (event) => {
+        let searchName = event.target.value;
+        await this.setState({contacts: this.state.allContacts});
+        let contactList = this.state.contacts;
+        if (searchName.trim().length > 0)
+        contactList = contactList.filter((contact) => 
+              contact.fullName.toLowerCase().indexOf(searchName.toLowerCase()) > -1 );
+        this.setState({ contacts: contactList });
+      }
 
     deleteContact(id){
         AddressBookService.deleteContact(id).then( res => {
@@ -59,6 +69,10 @@ class Home extends Component{
                 <div class="header-content">
                     <div class="person-detail-text">
                         Person Details <div class="person-count">{this.state.contacts.length}</div>
+                    </div>
+                    <div class="search-box">
+                             <input type="text" placeholder="Search Name" class="search-input" onChange={this.search} />
+                             <img className="search-icon" src={searchIcon} alt="Search Icon" />
                     </div>
                     <Link to="/add-contact/_add" class="add-button">
                     <img src="../../assets/icons/add-24px.svg" alt=""/>Add Person</Link>
