@@ -112,6 +112,7 @@ label{
     color: #008CFF;
     opacity: 1;
     font-family: Roboto;
+    text-align: left;
 }
 .input{
     width: 100%;

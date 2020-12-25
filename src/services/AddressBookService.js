@@ -11,5 +11,15 @@ class AddressBookService {
     createContact(contact){
         return axios.post(ADDRESS_API_BASE_URL+'/create', contact);
     }
+    deleteContact(contactId){
+        return axios.delete(ADDRESS_API_BASE_URL + '/delete/' + contactId);
+    }
+    getContactById(id){
+        return axios.get(ADDRESS_API_BASE_URL + '/get/' + id);
+    }
+    updateContact(contact, id){
+        return axios.put(ADDRESS_API_BASE_URL + '/update/' + id, contact);
+    }
+
 }
 export default new AddressBookService()

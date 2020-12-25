@@ -29,6 +29,29 @@ class AddressBookForm extends Component{
         this.changeZipCodeHandler=this.changeZipCodeHandler.bind(this);
     }
     componentWillMount(){
+        if(this.state.id === '_add'){
+            return
+        }else{
+            AddressBookService.getContactById(this.state.id).then( (res) =>{
+                let contact = res.data.data;
+                console.log(contact);
+                let OfullName= contact.fullName;
+                let Oaddress= contact.address;
+                let Ocity= contact.city;
+                let Ostate= contact.state;
+                let OphoneNumber=contact.phoneNumber;
+                let Ozip= contact.zip;
+
+
+                this.setState({fullName: OfullName,
+                    address: Oaddress,
+                    city: Ocity,
+                    state: Ostate,
+                    phoneNumber: OphoneNumber,
+                    zip: Ozip
+                });
+            });
+        } 
            
     }
     changeNameHandler =(event)=>{
@@ -62,12 +85,16 @@ class AddressBookForm extends Component{
                 zip: this.state.zip,
             };
             console.log('contact => ' + JSON.stringify(contact));
-            AddressBookService.createContact(contact);
-            // if(this.state.id === '_add'){
-            //     AddressBookService.createContact(contact).then(res =>{
-            //         this.props.history.push('/home');
-            //     });
-            // }
+            if(this.state.id === '_add'){
+                AddressBookService.createContact(contact).then(res =>{
+                    this.props.history.push('/home');
+                });
+            }else{
+                AddressBookService.updateContact(contact, this.state.id).then( res => {
+                    this.props.history.push('/home');
+                });
+            }
+
     }
     
     
@@ -88,21 +115,21 @@ class AddressBookForm extends Component{
                     <form class ="form" action="#">
                         <div class ="form-head">
                             <div class="form-header-text">PERSON ADDRESS FORM</div>
-                            <div class="cancel-button"><a href="./address_book_home.html"><img src={cancelIcon} alt=""/></a></div>
+                            <div class="cancel-button"><Link to="/home"><img src={cancelIcon} alt=""/></Link></div>
                         </div>
                         <div class="row-content">
                             <label class="label text" for="fullName">Full Name</label>
-                            <input class="input" type="text" id="fullName" onChange={this.changeNameHandler}  name="fullName" placeholder="Enter Your Full Name" required/>
+                            <input class="input" type="text" id="fullName" value={this.state.fullName} onChange={this.changeNameHandler}  name="fullName" placeholder="Enter Your Full Name" required/>
                             <error-output class="text-error" for="text"></error-output>
                         </div>
                         <div class="row-content">
                             <label class="label text" for="address">Address</label>
-                            <input class="input address-input" type="text" onChange={this.changeAddressHandler} id="address" placeholder="Address" required/>
+                            <input class="input address-input" value={this.state.address} type="text" onChange={this.changeAddressHandler} id="address" placeholder="Address" required/>
                             <error-output class ="address-error" for="text"></error-output>
                         </div>
                         <div class="select-input-fields">
                             <label class="label text" for="city" >City</label>
-                            <select id="city" name="city" value={this.state.city} onChange={this.changeCityHandler}>
+                            <select id="city" name="city" value={this.state.city}  onChange={this.changeCityHandler}>
                                 <option value="Patna">Patna</option>
                                 <option value="AArah">Aarah</option>
                                 <option value="Buxar">Buxar</option>
@@ -120,12 +147,12 @@ class AddressBookForm extends Component{
                                 <option value="Orissa">Orissa</option>
                             </select>
                             <label class="label-text-select" for="zip">Zip Code</label>
-                            <input class="input" type="text" id="zipCode" name="zipCode" onChange={this.changeZipCodeHandler} placeholder="Zip Code" required/>
+                            <input class="input" type="text" id="zipCode" name="zipCode" value={this.state.zip} onChange={this.changeZipCodeHandler} placeholder="Zip Code" required/>
 
                         </div>
                         <div class="row-content">
                             <label class="label text" for="phone">Phone Number</label>
-                            <input class="input" type="text" id="tel" name="tel" onChange={this.changePhoneNumberHandler}  placeholder="Phone Number" required/>
+                            <input class="input" type="text" id="tel" value={this.state.phoneNumber} name="tel" onChange={this.changePhoneNumberHandler}  placeholder="Phone Number" required/>
                             <error-output class ="tel-error" for="text"></error-output>
                         </div>
                         <div class="buttonParent">

@@ -17,6 +17,8 @@ class Home extends Component{
                 contacts: [],
                 allContacts: [],
         }
+        this.deleteContact = this.deleteContact.bind(this);
+        this.updateContact = this.updateContact.bind(this);
     }
 
     componentWillMount(){
@@ -31,6 +33,15 @@ class Home extends Component{
         })
         .catch(err => console.log(err));
         console.log("all" +this.state.contacts);
+    }
+
+    deleteContact(id){
+        AddressBookService.deleteContact(id).then( res => {
+            this.setState({contacts: this.state.contacts.filter(contact => contact.id !== id)});
+        });
+    }
+    updateContact(id){
+        this.props.history.push(`/add-contact/${id}`);
     }
     render(){
         return(
@@ -47,7 +58,7 @@ class Home extends Component{
                 <div class="main-content">
                 <div class="header-content">
                     <div class="person-detail-text">
-                        Person Details <div class="person-count">10</div>
+                        Person Details <div class="person-count">{this.state.contacts.length}</div>
                     </div>
                     <Link to="/add-contact/_add" class="add-button">
                     <img src="../../assets/icons/add-24px.svg" alt=""/>Add Person</Link>
@@ -66,9 +77,9 @@ class Home extends Component{
                                     <td>{contact.zip}</td>
                                     <td>{contact.phoneNumber}</td>
                                     <td>
-                                        <img id={contact._id}  alt="delete"
+                                        <img id={contact.id}  alt="delete"  onClick={()=>this.deleteContact(contact.id)}
                                                 src={deleteIcon}/>
-                                        <img id={contact._id} alt="edit" 
+                                        <img id={contact.id} alt="edit" onClick={()=>this.updateContact(contact.id)}
                                                 src={updateIcon}/>        
                                     </td>
                                 </tr>
