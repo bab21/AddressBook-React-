@@ -1,6 +1,6 @@
 body{
     margin: 0;
-    height: 100%;
+    height: 80%;
 }
 
 .header{
@@ -38,7 +38,11 @@ body{
 .address-book{color: #42515f;}
 
 .form-content{
-    min-height: calc(100% - 80px);
+    padding-top: 67px;
+    padding-left: 150px;
+    padding-right: 150px;
+    padding-bottom: 67px;
+    /* min-height: calc(100% - 80px); */
     background-color: #f7f7f7;
     display: flex;
     justify-content: center;
@@ -47,8 +51,11 @@ body{
 }
 
 .form{
-    width: 65%;
-    padding: 44px 60px;
+    
+    /* width: 70%; */
+    /* height: 80%; */
+    /* margin-bottom: 10%; */
+    /* padding: 44px 60px; */
     background: #ffffff 0% 0% no-repeat padding-box;
     box-shadow: 0px 3px 6px #00000029;
     border: 1px solid #f5f5f5;
@@ -67,9 +74,13 @@ body{
     opacity: 1;
     padding-bottom: 20px;
 }
+.form-input-content{
+    padding: 3% 10% 5% 10% ;
+    /* margin-top: auto; */
+}
 
 .form-header-text{
-    margin-left: 30%;
+    margin-left: 25%;
 }
 .cancel-button{
     display: flex;
@@ -79,17 +90,19 @@ body{
 
 .row-content{
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     margin-bottom: 18px;
-    align-items: center;
+    margin-top: 0px;
+    align-items: left;
     border: 0px solid green;
 }
 
 .select-input-fields{
     display: flex;
     flex-direction: row;
-    margin-bottom: 18px;
+    margin-bottom: 30px;
     align-items: center;
+    margin-right: 0%;
     border: 0px solid green;
 }
 .label{
@@ -100,16 +113,16 @@ label{
     display: inline-block;
 }
 .label-text-select{
-    margin-left: 10%;
+    margin-left: 0%;
     font-size: 16px;
-    color: #008CFF;
+    color:#42515F;
     opacity: 1;
     font-family: Roboto;
 }
 
 .text{
     font-size: 16px;
-    color: #008CFF;
+    color: #42515F;
     opacity: 1;
     font-family: Roboto;
     text-align: left;
@@ -144,7 +157,7 @@ select {
 }
 
 .buttonParent {
-    display: flex;
+    /* display: flex; */
     margin-bottom: 0px;
     justify-content: space-between;
     margin-top: 20px;
@@ -172,18 +185,19 @@ select {
 
 .submitButton {
     background-color: green;
-    margin-left: 400px;
+    margin-left: 300px;
     color: white;
 }
 
 .submitButton[disabled]{
-  border: 1px solid #999999;
-  background-color: white;
+  /* border: 1px solid #999999; */
+  background-color: #E2E2E2;
   color: black;
 }
 .resetButton {
-    background-color: yellow;
-    margin-left: 100px;
+    background-color: #E2E2E2;
+    margin-left: 90px;
+    padding-right: 0px;
 }
 
 error-output{
@@ -191,4 +205,22 @@ error-output{
     font-size: 12px;
     font-style: italic;
     color: red;
+}
+.select-input-fields-city{
+    padding-left: 7px;
+    flex-direction: column;
+    width: 50%;
+    text-align: left;  
+}
+.select-input-fields-state{
+    padding-left: 100px;
+    flex-direction: column;
+    width: 50%;
+    text-align: left;  
+}
+.select-input-fields-zip{
+    margin-left: 100px;
+    flex-direction: column;
+    width: 50%;
+    text-align: left;
 }

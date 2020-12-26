@@ -1,8 +1,5 @@
 import React, {Component} from 'react'
 import './home.scss';
-// import logo from '../../assets/images/logo.png';
-// import searchIcon from '../../assets/icons/search_icon.svg'
-
 import deleteIcon from '../../assets/icons/delete-black-18dp.svg';
 import updateIcon from '../../assets/icons/create-black-18dp.svg'
 import searchIcon from '../../assets/icons/search_icon_1.svg'
@@ -23,8 +20,6 @@ class Home extends Component{
     }
 
     componentWillMount(){
-        console.log("calling");
-
         AddressBookService.getContacts().then((res) => {
             console.log(res);
             console.log("message : "+res.message);
@@ -33,7 +28,6 @@ class Home extends Component{
             this.setState({ allContacts: res.data.data});
         })
         .catch(err => console.log(err));
-        console.log("all" +this.state.contacts);
     }
     search = async (event) => {
         let searchName = event.target.value;
@@ -43,11 +37,13 @@ class Home extends Component{
         contactList = contactList.filter((contact) => 
               contact.fullName.toLowerCase().indexOf(searchName.toLowerCase()) > -1 );
         this.setState({ contacts: contactList });
-      }
+    }
 
     deleteContact(id){
         AddressBookService.deleteContact(id).then( res => {
+            let deletedContact =this.state.contacts.filter(contact => contact.id==id);
             this.setState({contacts: this.state.contacts.filter(contact => contact.id !== id)});
+            alert("Contact Deleted :"+JSON.stringify(deletedContact));
         });
     }
     updateContact(id){
@@ -91,10 +87,10 @@ class Home extends Component{
                                     <td>{contact.zip}</td>
                                     <td>{contact.phoneNumber}</td>
                                     <td>
-                                        <img id={contact.id}  alt="delete"  onClick={()=>this.deleteContact(contact.id)}
+                                        <img class="clickableImage" id={contact.id}  alt="delete"  onClick={()=>this.deleteContact(contact.id)}
                                                 src={deleteIcon}/>
-                                        <img id={contact.id} alt="edit" onClick={()=>this.updateContact(contact.id)}
-                                                src={updateIcon}/>        
+                                        <img class="clickableImage" id={contact.id} alt="edit" onClick={()=>this.updateContact(contact.id)}
+                                                src={updateIcon}/>   
                                     </td>
                                 </tr>
                             )
@@ -107,5 +103,4 @@ class Home extends Component{
         )
     }
 }
-
 export default withRouter(Home)
